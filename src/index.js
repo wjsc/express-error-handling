@@ -10,7 +10,7 @@ const controller = async (req, res, next) => {
         res.status(200).send(result);
     }
     catch(err){
-        return next({message: 'Internal Server Error', status: 500, ...err});
+        return next(err);
     }
 }
 
@@ -67,7 +67,8 @@ logErrors = (err, req, res, next) => {
 }
 
 errorHandler = (err, req, res, next) => {
-    res.status(err.status).send(err.message);
+    const error = { message: 'Internal Server Error', status: 500, ...err};
+    res.status(error.status).send(error.message);
 };
 
 app.get('/:client_id', controller);
